@@ -1,0 +1,30 @@
+{
+  "$comment": "GENERATED FROM interfaces/python: DO NOT EDIT. Run scripts/export_schema.py.",
+  "$defs": {
+    "RoISIdentifier": {
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "description": "A named result value returned by query or event operations.\n\nMaps to RoIS_HRI::Result in the IDL.\n\nAttributes:\n    name: The result parameter name (e.g., 'number', 'timestamp').\n    data_type_ref: Reference to the data type (e.g., 'int', 'DateTime').\n    value: The result value as a string. Component-specific typed models\n        provide structured access.",
+  "properties": {
+    "name": {
+      "title": "Name",
+      "type": "string"
+    },
+    "data_type_ref": {
+      "$ref": "#/$defs/RoISIdentifier"
+    },
+    "value": {
+      "title": "Value",
+      "type": "string"
+    }
+  },
+  "required": [
+    "name",
+    "data_type_ref",
+    "value"
+  ],
+  "title": "Result",
+  "type": "object"
+}

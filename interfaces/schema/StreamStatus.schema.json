@@ -1,0 +1,13 @@
+{
+  "$comment": "GENERATED FROM interfaces/python: DO NOT EDIT. Run scripts/export_schema.py.",
+  "description": "Status of a streaming connection.\n\nMaps to RoIS_Common::Stream_Status in the IDL.\n\nNOT_CONNECTED: No peer connection established.\nNOT_RUNNING: Connection exists but stream is not active.\nRUNNING: Stream is actively delivering data.\nSUSPENDED: Stream has been suspended (track disabled).\nRESUMED: Stream has been resumed after suspension.",
+  "enum": [
+    "STREAMING_NOT_CONNECTED",
+    "STREAMING_NOT_RUNNING",
+    "STREAMING_RUNNING",
+    "STREAMING_SUSPENDED",
+    "STREAMING_RESUMED"
+  ],
+  "title": "StreamStatus",
+  "type": "string"
+}

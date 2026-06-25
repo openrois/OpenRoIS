@@ -1,0 +1,31 @@
+{
+  "$comment": "GENERATED FROM interfaces/python: DO NOT EDIT. Run scripts/export_schema.py.",
+  "additionalProperties": false,
+  "description": "A structured RoIS identifier with optional metadata.\n\nMaps to RoISIdentifierType in XML-Profiles.xsd.\n\nAttributes:\n    authority: Optional naming authority (e.g., 'OMG').\n    code: The identifier code (e.g., 'PersonDetection').\n    codebook_ref: Optional reference to a codebook or ontology.\n    version: Optional version string.",
+  "properties": {
+    "authority": {
+      "default": "",
+      "title": "Authority",
+      "type": "string"
+    },
+    "code": {
+      "title": "Code",
+      "type": "string"
+    },
+    "codebook_ref": {
+      "default": "",
+      "title": "Codebook Ref",
+      "type": "string"
+    },
+    "version": {
+      "default": "",
+      "title": "Version",
+      "type": "string"
+    }
+  },
+  "required": [
+    "code"
+  ],
+  "title": "RoISIdentifierType",
+  "type": "object"
+}

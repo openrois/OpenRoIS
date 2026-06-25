@@ -1,0 +1,44 @@
+{
+  "$comment": "GENERATED FROM interfaces/python: DO NOT EDIT. Run scripts/export_schema.py.",
+  "$defs": {
+    "Integer": {
+      "type": "integer"
+    },
+    "RoutingPolicy": {
+      "description": "Routing policy for Navigation.\n\nThe XML profile defines routing_policy as a string with values 'time'\nor 'distance'. We constrain it to an enum for compile-time safety.",
+      "enum": [
+        "time",
+        "distance"
+      ],
+      "title": "RoutingPolicy",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "description": "Command payload for Navigation::Command::set_parameter.\n\nMaps to the set_parameter operation in Navigation.xml.\n\nAttributes:\n    target_positions: Navigation target positions as structured data.\n        In the XML profile, data_type_ref is 'string[]'.\n    time_limit: Intended time limit to complete navigation (default: 0).\n    routing_policy: Routing policy: 'time' priority or 'distance' priority\n        (default: 'time').",
+  "properties": {
+    "target_positions": {
+      "description": "Navigation target positions",
+      "items": {
+        "type": "string"
+      },
+      "title": "Target Positions",
+      "type": "array"
+    },
+    "time_limit": {
+      "$ref": "#/$defs/Integer",
+      "default": 0,
+      "description": "Intended time limit to complete navigation"
+    },
+    "routing_policy": {
+      "$ref": "#/$defs/RoutingPolicy",
+      "default": "time",
+      "description": "Routing policy: 'time' or 'distance' priority"
+    }
+  },
+  "required": [
+    "target_positions"
+  ],
+  "title": "NavigationSetParameter",
+  "type": "object"
+}

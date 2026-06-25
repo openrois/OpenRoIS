@@ -1,0 +1,44 @@
+{
+  "$comment": "GENERATED FROM interfaces/python: DO NOT EDIT. Run scripts/export_schema.py.",
+  "$defs": {
+    "DateTime": {
+      "type": "string"
+    },
+    "RoISIdentifier": {
+      "type": "string"
+    },
+    "RoISIdentifierList": {
+      "items": {
+        "$ref": "#/$defs/RoISIdentifier"
+      },
+      "type": "array"
+    }
+  },
+  "additionalProperties": false,
+  "description": "Result payload for System_Information::Query::robot_position.\n\nMaps to the robot_position query in SystemInformation.xml.\n\nAttributes:\n    timestamp: ISO 8601 datetime when the position was measured.\n    robot_ref: List of robot identifiers in the position data.\n    position_data: Positional/measurement data (RoLo Data sequence as strings).",
+  "properties": {
+    "timestamp": {
+      "$ref": "#/$defs/DateTime",
+      "description": "Time when measured"
+    },
+    "robot_ref": {
+      "$ref": "#/$defs/RoISIdentifierList",
+      "description": "List of robot IDs"
+    },
+    "position_data": {
+      "description": "Position data (RoLo Data sequence)",
+      "items": {
+        "type": "string"
+      },
+      "title": "Position Data",
+      "type": "array"
+    }
+  },
+  "required": [
+    "timestamp",
+    "robot_ref",
+    "position_data"
+  ],
+  "title": "SystemInformationRobotPositionResult",
+  "type": "object"
+}

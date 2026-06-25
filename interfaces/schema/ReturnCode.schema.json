@@ -1,0 +1,14 @@
+{
+  "$comment": "GENERATED FROM interfaces/python: DO NOT EDIT. Run scripts/export_schema.py.",
+  "description": "Return code for all RoIS operations.\n\nMaps to RoIS_HRI::ReturnCode_t in the IDL.",
+  "enum": [
+    "OK",
+    "ERROR",
+    "BAD_PARAMETER",
+    "UNSUPPORTED",
+    "OUT_OF_RESOURCES",
+    "TIMEOUT"
+  ],
+  "title": "ReturnCode",
+  "type": "string"
+}

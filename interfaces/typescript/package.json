@@ -1,0 +1,81 @@
+{
+  "name": "@openrois/interfaces",
+  "version": "0.1.0-alpha.1",
+  "description": "RoIS Framework 2.0 interface types for the OpenRoIS middleware",
+  "license": "Apache-2.0",
+  "author": "OpenRoIS Community",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    },
+    "./hri": {
+      "import": "./dist/hri.js",
+      "types": "./dist/hri.d.ts"
+    },
+    "./common": {
+      "import": "./dist/common.js",
+      "types": "./dist/common.d.ts"
+    },
+    "./service": {
+      "import": "./dist/service.js",
+      "types": "./dist/service.d.ts"
+    },
+    "./profiles": {
+      "import": "./dist/profiles.js",
+      "types": "./dist/profiles.d.ts"
+    },
+    "./bus": {
+      "import": "./dist/bus.js",
+      "types": "./dist/bus.d.ts"
+    },
+    "./components": {
+      "import": "./dist/components/index.js",
+      "types": "./dist/components/index.d.ts"
+    }
+  },
+  "files": ["dist"],
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/openrois/openrois.git",
+    "directory": "interfaces/typescript"
+  },
+  "homepage": "https://github.com/openrois/openrois/tree/main/interfaces/typescript",
+  "bugs": {
+    "url": "https://github.com/openrois/openrois/issues"
+  },
+  "keywords": [
+    "rois",
+    "omg",
+    "robotics",
+    "hri",
+    "webrtc",
+    "ros2",
+    "avatar",
+    "middleware",
+    "interfaces"
+  ],
+  "sideEffects": false,
+  "scripts": {
+    "generate": "tsx scripts/generate.ts",
+    "build": "npm run generate && tsc -p tsconfig.build.json",
+    "prepublishOnly": "npm run build",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "zod": "^3.23.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.4.0",
+    "vitest": "^1.6.0",
+    "tsx": "^4.7.0"
+  }
+}

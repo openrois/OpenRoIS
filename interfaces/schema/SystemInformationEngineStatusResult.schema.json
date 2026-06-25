@@ -1,0 +1,42 @@
+{
+  "$comment": "GENERATED FROM interfaces/python: DO NOT EDIT. Run scripts/export_schema.py.",
+  "$defs": {
+    "ComponentStatus": {
+      "description": "Status of a RoIS component.\n\nMaps to RoIS_Common::Component_Status in the IDL.\n\nUNINITIALIZED: Component has not been initialized.\nREADY: Component is ready to operate.\nBUSY: Component is currently processing.\nWARNING: Component is operational but has a warning condition.\nERROR: Component has encountered an error.",
+      "enum": [
+        "UNINITIALIZED",
+        "READY",
+        "BUSY",
+        "WARNING",
+        "ERROR"
+      ],
+      "title": "ComponentStatus",
+      "type": "string"
+    },
+    "DateTime": {
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "description": "Result payload for System_Information::Query::engine_status.\n\nMaps to the engine_status query in SystemInformation.xml.\n\nAttributes:\n    status: Current component status of the engine.\n    operable_time: List of ISO 8601 datetimes representing operable periods.",
+  "properties": {
+    "status": {
+      "$ref": "#/$defs/ComponentStatus",
+      "description": "Engine component status"
+    },
+    "operable_time": {
+      "description": "Operable time periods",
+      "items": {
+        "$ref": "#/$defs/DateTime"
+      },
+      "title": "Operable Time",
+      "type": "array"
+    }
+  },
+  "required": [
+    "status",
+    "operable_time"
+  ],
+  "title": "SystemInformationEngineStatusResult",
+  "type": "object"
+}

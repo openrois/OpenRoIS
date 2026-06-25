@@ -1,0 +1,12 @@
+{
+  "$comment": "GENERATED FROM interfaces/python: DO NOT EDIT. Run scripts/export_schema.py.",
+  "description": "Classification of error notifications.\n\nMaps to RoIS_Service::ErrorType in the IDL.\n\nENGINE_INTERNAL_ERROR: Error originating from the HRI Engine itself.\nCOMPONENT_INTERNAL_ERROR: Error originating from a component.\nCOMPONENT_NOT_RESPONDING: A component failed to respond within timeout.\nUSER_DEFINED_ERROR: Application-specific error.",
+  "enum": [
+    "ENGINE_INTERNAL_ERROR",
+    "COMPONENT_INTERNAL_ERROR",
+    "COMPONENT_NOT_RESPONDING",
+    "USER_DEFINED_ERROR"
+  ],
+  "title": "ErrorType",
+  "type": "string"
+}

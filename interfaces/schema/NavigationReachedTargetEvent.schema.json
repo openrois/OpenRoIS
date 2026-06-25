@@ -1,0 +1,23 @@
+{
+  "$comment": "GENERATED FROM interfaces/python: DO NOT EDIT. Run scripts/export_schema.py.",
+  "additionalProperties": false,
+  "description": "Event payload for Navigation::Event::reached_target.\n\nMaps to the reached_target event in Navigation.xml.\n\nAttributes:\n    target: The reached target destination.\n    is_final_target: Whether this is the final destination point.",
+  "properties": {
+    "target": {
+      "description": "Reached target destination",
+      "title": "Target",
+      "type": "string"
+    },
+    "is_final_target": {
+      "description": "Whether this is the final destination point",
+      "title": "Is Final Target",
+      "type": "boolean"
+    }
+  },
+  "required": [
+    "target",
+    "is_final_target"
+  ],
+  "title": "NavigationReachedTargetEvent",
+  "type": "object"
+}

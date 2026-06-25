@@ -1,0 +1,13 @@
+{
+  "$comment": "GENERATED FROM interfaces/python: DO NOT EDIT. Run scripts/export_schema.py.",
+  "description": "Status of a completed command execution.\n\nMaps to RoIS_Service::Completed_Status in the IDL.\n\nOK: Command completed successfully.\nERROR: Command completed with an error.\nABORT: Command was aborted.\nOUT_OF_RESOURCES: Command failed due to resource exhaustion.\nTIMEOUT: Command timed out before completion.",
+  "enum": [
+    "OK",
+    "ERROR",
+    "ABORT",
+    "OUT_OF_RESOURCES",
+    "TIMEOUT"
+  ],
+  "title": "CompletedStatus",
+  "type": "string"
+}

@@ -1,0 +1,100 @@
+{
+  "$comment": "GENERATED FROM interfaces/python: DO NOT EDIT. Run scripts/export_schema.py.",
+  "$defs": {
+    "HRIEngineProfileType": {
+      "additionalProperties": false,
+      "description": "Describes an HRI Engine's composition of sub-engines and components.\n\nMaps to HRIEngineProfileType in XML-Profiles.xsd.\n\nAttributes:\n    identifier: The engine's structured identifier.\n    sub_profiles: Nested sub-engine profiles.\n    component_ids: IDs of components hosted by this engine.\n    parameter_profiles: Engine-level parameter declarations.",
+      "properties": {
+        "identifier": {
+          "$ref": "#/$defs/RoISIdentifierType"
+        },
+        "sub_profiles": {
+          "items": {
+            "$ref": "#/$defs/HRIEngineProfileType"
+          },
+          "title": "Sub Profiles",
+          "type": "array"
+        },
+        "component_ids": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Component Ids",
+          "type": "array"
+        },
+        "parameter_profiles": {
+          "items": {
+            "$ref": "#/$defs/ParameterProfile"
+          },
+          "title": "Parameter Profiles",
+          "type": "array"
+        }
+      },
+      "required": [
+        "identifier"
+      ],
+      "title": "HRIEngineProfileType",
+      "type": "object"
+    },
+    "ParameterProfile": {
+      "additionalProperties": false,
+      "description": "Describes a parameter's data type and metadata.\n\nMaps to ParameterProfileType in XML-Profiles.xsd.\n\nUsed in both message profiles (Arguments/Results) and component-level\nparameter declarations.\n\nAttributes:\n    name: The parameter name.\n    data_type_ref: Reference to the data type (e.g., 'int', 'DateTime',\n        'RoISIdentifier[]').\n    default_value: Optional default value as a string.\n    description: Optional human-readable description.",
+      "properties": {
+        "name": {
+          "title": "Name",
+          "type": "string"
+        },
+        "data_type_ref": {
+          "$ref": "#/$defs/RoISIdentifierType"
+        },
+        "default_value": {
+          "default": "",
+          "title": "Default Value",
+          "type": "string"
+        },
+        "description": {
+          "default": "",
+          "title": "Description",
+          "type": "string"
+        }
+      },
+      "required": [
+        "name",
+        "data_type_ref"
+      ],
+      "title": "ParameterProfile",
+      "type": "object"
+    },
+    "RoISIdentifierType": {
+      "additionalProperties": false,
+      "description": "A structured RoIS identifier with optional metadata.\n\nMaps to RoISIdentifierType in XML-Profiles.xsd.\n\nAttributes:\n    authority: Optional naming authority (e.g., 'OMG').\n    code: The identifier code (e.g., 'PersonDetection').\n    codebook_ref: Optional reference to a codebook or ontology.\n    version: Optional version string.",
+      "properties": {
+        "authority": {
+          "default": "",
+          "title": "Authority",
+          "type": "string"
+        },
+        "code": {
+          "title": "Code",
+          "type": "string"
+        },
+        "codebook_ref": {
+          "default": "",
+          "title": "Codebook Ref",
+          "type": "string"
+        },
+        "version": {
+          "default": "",
+          "title": "Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "code"
+      ],
+      "title": "RoISIdentifierType",
+      "type": "object"
+    }
+  },
+  "$ref": "#/$defs/HRIEngineProfileType"
+}

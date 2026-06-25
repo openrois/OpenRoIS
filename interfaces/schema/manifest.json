@@ -1,0 +1,61 @@
+{
+  "version": "0.1.0-alpha.1",
+  "modules": {
+    "hri": [
+      "Argument.schema.json",
+      "CommandUnit.schema.json",
+      "CommandUnitSequence.schema.json",
+      "ConcurrentCommands.schema.json",
+      "Parameter.schema.json",
+      "Result.schema.json",
+      "ReturnCode.schema.json"
+    ],
+    "service": [
+      "CompletedEvent.schema.json",
+      "CompletedStatus.schema.json",
+      "ErrorType.schema.json",
+      "NotifyErrorEvent.schema.json",
+      "NotifyEventPayload.schema.json"
+    ],
+    "profiles": [
+      "CommandMessageProfile.schema.json",
+      "EventMessageProfile.schema.json",
+      "HRIComponentProfile.schema.json",
+      "HRIEngineProfileType.schema.json",
+      "MessageProfile.schema.json",
+      "ParameterProfile.schema.json",
+      "QueryMessageProfile.schema.json",
+      "RoISIdentifierType.schema.json"
+    ],
+    "bus": [
+      "CommandRequest.schema.json",
+      "DiscoverRequest.schema.json",
+      "DiscoverResponse.schema.json",
+      "EventEnvelope.schema.json",
+      "InvokeResponse.schema.json",
+      "QueryRequest.schema.json",
+      "QueryResponse.schema.json",
+      "SubscribeRequest.schema.json",
+      "SubscribeResponse.schema.json"
+    ],
+    "components/person-detection": [
+      "PersonDetectedEvent.schema.json",
+      "PersonDetectionStatusResult.schema.json"
+    ],
+    "components/navigation": [
+      "NavigationGetParameterResult.schema.json",
+      "NavigationReachedTargetEvent.schema.json",
+      "NavigationSetParameter.schema.json",
+      "NavigationSetParameterResult.schema.json",
+      "NavigationStatusResult.schema.json"
+    ],
+    "components/system-information": [
+      "SystemInformationEngineStatusResult.schema.json",
+      "SystemInformationRobotPositionResult.schema.json"
+    ],
+    "common": [
+      "ComponentStatus.schema.json",
+      "StreamStatus.schema.json"
+    ]
+  }
+}

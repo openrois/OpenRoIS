@@ -1,0 +1,44 @@
+{
+  "$comment": "GENERATED FROM interfaces/python: DO NOT EDIT. Run scripts/export_schema.py.",
+  "$defs": {
+    "Integer": {
+      "type": "integer"
+    },
+    "RoutingPolicy": {
+      "description": "Routing policy for Navigation.\n\nThe XML profile defines routing_policy as a string with values 'time'\nor 'distance'. We constrain it to an enum for compile-time safety.",
+      "enum": [
+        "time",
+        "distance"
+      ],
+      "title": "RoutingPolicy",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "description": "Result payload for Navigation::Query::get_parameter.\n\nMaps to the get_parameter operation in Navigation.xml.\n\nAttributes:\n    target_positions: Current navigation target positions.\n    time_limit: Current time limit setting.\n    routing_policy: Current routing policy setting.",
+  "properties": {
+    "target_positions": {
+      "description": "Current navigation target positions",
+      "items": {
+        "type": "string"
+      },
+      "title": "Target Positions",
+      "type": "array"
+    },
+    "time_limit": {
+      "$ref": "#/$defs/Integer",
+      "description": "Current time limit setting"
+    },
+    "routing_policy": {
+      "$ref": "#/$defs/RoutingPolicy",
+      "description": "Current routing policy setting"
+    }
+  },
+  "required": [
+    "target_positions",
+    "time_limit",
+    "routing_policy"
+  ],
+  "title": "NavigationGetParameterResult",
+  "type": "object"
+}

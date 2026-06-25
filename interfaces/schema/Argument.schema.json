@@ -1,0 +1,30 @@
+{
+  "$comment": "GENERATED FROM interfaces/python: DO NOT EDIT. Run scripts/export_schema.py.",
+  "$defs": {
+    "RoISIdentifier": {
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "description": "A named argument for command execution.\n\nMaps to RoIS_HRI::Argument in the IDL.\n\nAttributes:\n    name: The argument name.\n    data_type_ref: Reference to the data type.\n    value: The argument value as a string.",
+  "properties": {
+    "name": {
+      "title": "Name",
+      "type": "string"
+    },
+    "data_type_ref": {
+      "$ref": "#/$defs/RoISIdentifier"
+    },
+    "value": {
+      "title": "Value",
+      "type": "string"
+    }
+  },
+  "required": [
+    "name",
+    "data_type_ref",
+    "value"
+  ],
+  "title": "Argument",
+  "type": "object"
+}

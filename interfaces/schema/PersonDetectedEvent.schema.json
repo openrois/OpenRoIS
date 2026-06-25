@@ -1,0 +1,29 @@
+{
+  "$comment": "GENERATED FROM interfaces/python: DO NOT EDIT. Run scripts/export_schema.py.",
+  "$defs": {
+    "DateTime": {
+      "type": "string"
+    },
+    "Integer": {
+      "type": "integer"
+    }
+  },
+  "additionalProperties": false,
+  "description": "Event payload for Person_Detection::Event::person_detected.\n\nMaps to the person_detected event in PersonDetection.xml.\n\nAttributes:\n    timestamp: ISO 8601 datetime when the detection was measured.\n    number: Number of detected persons in the current frame/observation.",
+  "properties": {
+    "timestamp": {
+      "$ref": "#/$defs/DateTime",
+      "description": "Time when measured"
+    },
+    "number": {
+      "$ref": "#/$defs/Integer",
+      "description": "Number of detected persons"
+    }
+  },
+  "required": [
+    "timestamp",
+    "number"
+  ],
+  "title": "PersonDetectedEvent",
+  "type": "object"
+}
