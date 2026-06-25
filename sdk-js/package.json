@@ -1,0 +1,27 @@
+{
+  "name": "@openrois/sdk",
+  "version": "0.1.0-alpha.1",
+  "description": "",
+  "license": "Apache-2.0",
+  "author": "OpenRoIS Community",
+  "type": "module",
+  "main": "index.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "@openrois/interfaces": "file:../interfaces/typescript",
+    "ws": "^8.21.0"
+  },
+  "devDependencies": {
+    "@types/ws": "^8.18.1",
+    "eslint": "^10.5.0",
+    "tsup": "^8.5.1",
+    "typescript": "^6.0.3",
+    "vite": "^8.0.16",
+    "vitest": "^4.1.9"
+  }
+}
