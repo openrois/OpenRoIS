@@ -105,7 +105,7 @@ and it is **identical** whether the host is a robot or an avatar.
 │  LAYER 2 - ROIS GATEWAY  (the "main HRI Engine", bus-independent)     │
 │  Auth · RBAC · Session Mgr · WS Server · RoIS Adapter · WebRTC Bridge │
 └───────────────┬──────────────────────────────────────────────────────┘
-                │ BusAdapter interface (discover · invoke · query · subscribe)
+                │ BusAdapter interface (discover · invoke · query · subscribe · unsubscribe)
                 ▼
 ┌──────────────────────────────────────────────────────────────────────┐
 │  LAYER 3 - INTERNAL BUS  (pluggable: choose one adapter per host)     │
@@ -381,14 +381,17 @@ public:
     // Event: async push (notify_event, notify_stream_status)
     virtual ReturnCode_t subscribe(const RoIS_Identifier& ref,
                                     EventSink* sink) = 0;
+
+    // Cancel an event subscription
+    virtual ReturnCode_t unsubscribe(const string& subscribe_id) = 0;
 };
 ```
 
-| Adapter | Paradigm | Discovery | Invoke | Event |
-|---------|----------|-----------|--------|-------|
-| **InProcessBusAdapter** | Avatar (single process) | registry lookup | direct method call | language event / callback |
-| **gRPCBusAdapter** | Distributed services | service registry | gRPC unary | gRPC server-stream |
-| **ROS2BusAdapter** | Physical robot | DDS discovery | service / action | topic subscription |
+| Adapter | Paradigm | Discovery | Invoke | Event | Unsubscribe |
+|---------|----------|-----------|--------|-------|-------------|
+| **InProcessBusAdapter** | Avatar (single process) | registry lookup | direct method call | language event / callback | remove callback |
+| **gRPCBusAdapter** | Distributed services | service registry | gRPC unary | gRPC server-stream | cancel gRPC stream |
+| **ROS2BusAdapter** | Physical robot | DDS discovery | service / action | topic subscription | topic unsubscribe |
 
 Because the engine sees only `BusAdapter`, **adding a new paradigm is an additive
 adapter, never a rewrite**. Accidental coupling (e.g. baking DDS QoS semantics into
@@ -707,4 +710,4 @@ openrois/
 *This is an engineering design document for the OpenRoIS project. For the
 specification summary, see [rois-reference.md](rois-reference.md).
 For the milestone roadmap, see [roadmap.md](roadmap.md). For authoritative
-requirements, consult the OMG specification at <https://www.omg.org/spec/RoIS/2.0/Beta2>.*
+requirements, consult the OMG specification at <https://www.omg.org/spec/RoIS/2.0/>.*

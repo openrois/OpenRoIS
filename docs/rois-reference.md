@@ -92,7 +92,7 @@ An implementation claiming conformance shall:
 |------|---------|
 | **HRI** | Human-Robot Interaction. |
 | **HRI Component** | An abstract object that uses sensors/actuators to provide a specific HRI function (person detection, speech, etc.). Internal structure is encapsulated. |
-| **Basic HRI Component** | An HRI Component providing a *commonly implemented* HRI function. 15+ are defined normatively. |
+| **Basic HRI Component** | An HRI Component providing a *commonly implemented* HRI function. 17 are defined normatively. |
 | **User-defined HRI Component** | Any HRI Component providing a function beyond the basic set. |
 | **HRI Engine** | An object that **manages** HRI Components and mediates their functions to service applications. A physical unit. |
 | **Service Application** | Software that controls HRI Components (via the HRI Engine) to implement a robot scenario. |
@@ -162,7 +162,7 @@ interfaces, plus a Streaming interface layered on the others.
 
 ### 7.1 Return Codes (`ReturnCode_t`)
 
-`OK`, `ERROR`, `BAD_PARAMETER`, `OUT_OF_RESOURCES`, `TIMEOUT`.
+`OK`, `ERROR`, `BAD_PARAMETER`, `UNSUPPORTED`, `OUT_OF_RESOURCES`, `TIMEOUT`.
 
 Each PSM may map these to return codes or exceptions.
 
@@ -201,6 +201,10 @@ Component error notifications are valid from `bind()`/`bind_any()` until `releas
 state transitions usually depend synchronously on queried info. May be called any
 time.
 
+> **OpenRoIS extension:** The IDL `QueryIF.query` takes only `query_type` and
+> `condition`. OpenRoIS adds a `component_ref` parameter to address a specific
+> component in multi-component systems.
+
 ### 7.5 Event Interface
 
 - `subscribe(event_type, condition)` → returns a `subscribe_id`.
@@ -208,6 +212,10 @@ time.
   the event occurs.
 - `get_event_detail(event_id, …)` fetches details (subject to the `expire` time
   limit).
+
+> **OpenRoIS extension:** The IDL `EventIF.subscribe` takes only `event_type` and
+> `condition`. OpenRoIS adds a `component_ref` parameter to address a specific
+> component in multi-component systems.
 - `unsubscribe(subscribe_id)` cancels. Duplicate subscribe/unsubscribe requests are
   silently ignored (no error).
 

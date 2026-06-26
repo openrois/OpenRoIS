@@ -55,8 +55,8 @@ M0 -> M1 -> M2 -> M3 -> M4 -> M5 (Web SDK and Robot MVP, v0.1.0)
 Transport-independent type definitions derived from the OMG RoIS Framework 2.0
 IDL. Authored as Pydantic models in Python, exported to JSON Schema (the canonical
 wire contract), and generated into C# and TypeScript. Includes the `BusAdapter`
-protocol: the four-method contract (`discover`, `invoke`, `query`, `subscribe`)
-that decouples the engine from any specific middleware.
+protocol: the five-method contract (`discover`, `invoke`, `query`, `subscribe`,
+`unsubscribe`) that decouples the engine from any specific middleware.
 
 ### M1: Engine and In-Process Bus
 

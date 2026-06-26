@@ -70,7 +70,7 @@ through a single, paradigm-neutral SDK.
 This white paper describes the following contributions:
 
 1. A **paradigm-neutral architecture** for RoIS 2.0 that decouples the engine,
-   gateway, and client SDK from any specific middleware through a four-method
+   gateway, and client SDK from any specific middleware through a five-method
    `BusAdapter` contract (section 5).
 2. A **single-source-of-truth type pipeline** that authors interfaces as Python
    Pydantic models and generates C# and TypeScript types from a canonical JSON
@@ -276,7 +276,7 @@ flowchart TB
 
     subgraph L3["Layer 3: Internal Bus (Pluggable)"]
         direction LR
-        BusAdapter["BusAdapter Contract<br/>discover, invoke, query, subscribe"]
+        BusAdapter["BusAdapter Contract<br/>discover, invoke, query, subscribe, unsubscribe"]
     end
 
     subgraph L4["Layer 4: Hosts (Sub-Engines and Components)"]
@@ -332,7 +332,7 @@ security. It:
 ## 5. The BusAdapter Contract
 
 The `BusAdapter` is the single abstraction that decouples the engine from any
-paradigm. The engine, gateway, and SDK depend only on this four-method contract. They
+paradigm. The engine, gateway, and SDK depend only on this five-method contract. They
 never reference ROS, DDS, gRPC, or a game engine.
 
 ```mermaid
@@ -343,6 +343,7 @@ classDiagram
         +invoke(ref, command) CommandResult
         +query(ref, query) Result
         +subscribe(ref, sink) SubscribeId
+        +unsubscribe(subscribeId) ReturnCode
     }
 
     class InProcessBusAdapter {
@@ -375,6 +376,7 @@ classDiagram
 | `invoke` | Execute a command (start, stop, execute, set_parameter) | ROS 2 action or service | direct method call | gRPC unary |
 | `query` | Synchronous read (component_status, get_parameter) | ROS 2 service | direct method call | gRPC unary |
 | `subscribe` | Async event push (notify_event, notify_stream_status) | ROS 2 topic subscription | callback / language event | gRPC server-stream |
+| `unsubscribe` | Cancel an event subscription | ROS 2 topic unsubscribe | remove callback | cancel gRPC stream |
 
 ### 5.2 RoIS operation to BusAdapter method mapping
 
@@ -387,9 +389,9 @@ The RoIS interface operations map to BusAdapter methods as follows:
 - Async push operations (`notify_event`, `notify_stream_status`) map to `subscribe`
   plus an event sink.
 
-### 5.3 Why four methods
+### 5.3 Why five methods
 
-The contract is deliberately kept to four methods. Adding transport-specific knobs
+The contract is deliberately kept to five methods. Adding transport-specific knobs
 (QoS policies, deadlines, reliability) to the contract would leak paradigm
 assumptions into the engine. Instead, QoS, deadlines, and reliability belong to
 whichever adapter needs them. Only the ROS 2 adapter needs DDS QoS. The in-process
@@ -419,7 +421,7 @@ flowchart LR
     end
 
     subgraph Generated["Generated language stacks"]
-        CS["interfaces/csharp/<br/>OpenRoIS.Interfaces<br/>(netstandard2.1 / net10.0)"]
+        CS["interfaces/csharp/<br/>OpenRoIS.Interfaces<br/>(netstandard2.1)"]
         TS["interfaces/typescript/<br/>@openrois/interfaces<br/>(ESM + zod schemas)"]
     end
 
@@ -483,8 +485,8 @@ gateway.
 flowchart TB
     subgraph SDKs["Client SDKs"]
         direction LR
-        CSharp["C# SDK<br/>Unity operator apps<br/>(primary client)"]
-        TS["TypeScript SDK<br/>Web dashboards, monitoring<br/>(secondary client)"]
+        CSharp["C# SDK<br/>Unity operator apps<br/>(secondary client)"]
+        TS["TypeScript SDK<br/>Web dashboards, monitoring<br/>(primary client)"]
         Py["Python SDK<br/>Scripting, E2E testing<br/>(secondary client)"]
     end
 
@@ -493,9 +495,9 @@ flowchart TB
     BusAdapter --> Hosts["Robots, Avatars, Services"]
 ```
 
-### 7.1 C# SDK for Unity (primary client)
+### 7.1 C# SDK for Unity (secondary client)
 
-The C# SDK (`OpenRoIS.Sdk` / `org.openrois.sdk`) is the primary client SDK, targeting
+The C# SDK (`OpenRoIS.Sdk` / `org.openrois.sdk`) is a secondary client SDK, targeting
 Unity operator applications. It connects to the gateway over WebSocket using
 JSON-RPC 2.0, with async connect, auto-reconnect, token handling, heartbeat, and
 typed errors. Component proxies provide typed access to each RoIS component with
@@ -524,11 +526,11 @@ Key characteristics:
 - Typed component proxies: `engine.BindAsync("PersonDetection")` returns a typed
   proxy with `.On(event)` handlers.
 
-### 7.2 TypeScript SDK for web (secondary client)
+### 7.2 TypeScript SDK for web (primary client)
 
-The TypeScript SDK (`@openrois/sdk`) serves non-Unity web applications: operator
-dashboards, monitoring tools, configuration UIs, and automated testing. It runs in
-both browsers and Node.js.
+The TypeScript SDK (`@openrois/sdk`) is the primary client SDK for web applications:
+operator dashboards, monitoring tools, configuration UIs, and automated testing. It
+runs in both browsers and Node.js.
 
 ```ts
 import { RoISEngine } from "@openrois/sdk";
@@ -625,7 +627,7 @@ as JSON-RPC notifications (messages with no `id` field).
 
 ```
 rois.system.*     SystemIF:    connect, disconnect, get_profile, get_error_detail
-rois.command.*    CommandIF:   search, bind, release, get_parameter, set_parameter, execute, get_command_result
+rois.command.*    CommandIF:   search, bind, bind_any, release, get_parameter, set_parameter, execute, get_command_result
 rois.query.*      QueryIF:     query
 rois.event.*      EventIF:     subscribe, unsubscribe, get_event_detail
 rois.stream.*     Streaming:   connect_stream, disconnect_stream, suspend_stream, resume_stream, query_stream_status
@@ -657,10 +659,11 @@ rois.stream.notify_status  notify_stream_status(stream_id, status)
 |--------|--------|----------|
 | `rois.command.search` | `{condition: string}` | `{return_code, component_ref_list: string[]}` |
 | `rois.command.bind` | `{component_ref: string}` | `{return_code}` |
+| `rois.command.bind_any` | `{condition: string}` | `{return_code, component_ref: string}` |
 | `rois.command.release` | `{component_ref: string}` | `{return_code}` |
-| `rois.command.get_parameter` | `{component_ref, parameter_names: string[]}` | `{return_code, parameters: Parameter[]}` |
-| `rois.command.set_parameter` | `{component_ref, parameters: Parameter[]}` | `{return_code}` |
-| `rois.command.execute` | `{component_ref, command_unit_list: CommandUnitSequence}` | `{return_code, command_id: string}` |
+| `rois.command.get_parameter` | `{component_ref: string}` | `{return_code, parameters: Parameter[]}` |
+| `rois.command.set_parameter` | `{component_ref, parameters: Parameter[]}` | `{return_code, command_id: string}` |
+| `rois.command.execute` | `{command_unit_list: CommandUnitSequence}` | `{return_code, command_id: string}` |
 | `rois.command.get_command_result` | `{command_id: string}` | `{return_code, results: Result[]}` |
 
 #### Query interface (`rois.query.*`)
@@ -846,7 +849,6 @@ Gateway responds with matching component references:
   "id": 5,
   "method": "rois.command.execute",
   "params": {
-    "component_ref": "robot-a1/PersonDetection",
     "command_unit_list": {
       "command_unit_list": [
         {
@@ -945,7 +947,6 @@ Set the navigation parameters:
   "id": 8,
   "method": "rois.command.execute",
   "params": {
-    "component_ref": "robot-a1/Navigation",
     "command_unit_list": {
       "command_unit_list": [
         {
@@ -1150,34 +1151,30 @@ parallel:
   "id": 13,
   "method": "rois.command.execute",
   "params": {
-    "component_ref": "robot-a1/Navigation",
     "command_unit_list": {
       "command_unit_list": [
         {
-          "command_message": {
-            "component_ref": "robot-a1/PersonDetection",
-            "command_type": "start",
-            "command_id": "cmd-pd-start"
-          }
+          "component_ref": "robot-a1/PersonDetection",
+          "command_type": "start",
+          "command_id": "cmd-pd-start"
         },
         {
-          "concurrent_commands": {
-            "command_list": [
-              {
-                "component_ref": "robot-a1/Navigation",
-                "command_type": "execute",
-                "command_id": "cmd-nav-002",
-                "arguments": [
-                  {"name": "target_positions", "data_type_ref": "string[]", "value": "[\"3.0,1.5,0.0\"]"}
-                ]
-              },
-              {
-                "component_ref": "robot-a1/SpeechSynthesis",
-                "command_type": "set_parameter",
-                "command_id": "cmd-speech-001",
-                "arguments": [
-                  {"name": "speech_text", "data_type_ref": "string", "value": "Moving to target"}
-                ]
+          "command_list": [
+            {
+              "component_ref": "robot-a1/Navigation",
+              "command_type": "execute",
+              "command_id": "cmd-nav-002",
+              "arguments": [
+                {"name": "target_positions", "data_type_ref": "string[]", "value": "[\"3.0,1.5,0.0\"]"}
+              ]
+            },
+            {
+              "component_ref": "robot-a1/SpeechSynthesis",
+              "command_type": "set_parameter",
+              "command_id": "cmd-speech-001",
+              "arguments": [
+                {"name": "speech_text", "data_type_ref": "string", "value": "Moving to target"}
+              ]
               }
             ]
           }
@@ -1601,14 +1598,14 @@ flowchart LR
 | M2 | Remote Gateway | `gateway` (WebSocket, JSON-RPC 2.0, auth hook) | TODO |
 | M3 | ROS 2 Bus Adapter | `ROS2BusAdapter` (rclpy), no core changes | TODO |
 | M4 | Mock ROS 2 Robot Components | `person_detection`, `navigation`, `system_information` nodes | TODO |
-| M5 | SDK and Robot MVP | `sdk-csharp` / `sdk-js`, operator app, **v0.1.0 release** | TODO |
+| M5 | SDK and Robot MVP | `sdk-js`, web operator app, **v0.1.0 release** | TODO |
 | M8 | Real Robot Component and Mixed Paradigm | YOLO `person_detection`, robot + avatar on one gateway | TODO |
 | M9 | Auth and Bus Security | `auth`, `rbac`, per-fleet isolation | TODO |
 | M10 | WebRTC Media | Streaming components, telepresence | TODO |
 | M11 | Full Component Library | All 17 basic components, both paradigms, **v1.0** | TODO |
 
 The MVP is M5: the minimum that lets an operator clone, build, and control a ROS 2
-robot from an application over WebSocket. The paradigm-neutrality proof is M8 (mixed
+robot from a web application over WebSocket. The paradigm-neutrality proof is M8 (mixed
 robot + avatar on one gateway). The 1.0 release is M11.
 
 ### 14.1 Versioning
@@ -1649,7 +1646,7 @@ service without rewriting the scenario logic.
 
 ### 15.3 OpenRoIS and Unity
 
-Unity is the primary client platform for operator applications. The C# SDK targets
+Unity is a secondary client platform for operator applications. The C# SDK targets
 Unity via UPM and runs on both Mono (Unity 6.3+) and CoreCLR (Unity 6.8). The same
 SDK also works outside Unity (any .NET runtime). The in-process avatar topology
 means a Unity application can host the engine, gateway, and avatar components in a
