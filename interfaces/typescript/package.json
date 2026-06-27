@@ -38,30 +38,12 @@
     }
   },
   "files": ["dist"],
-  "publishConfig": {
-    "access": "public"
-  },
+  "sideEffects": false,
   "repository": {
     "type": "git",
     "url": "https://github.com/openrois/openrois.git",
     "directory": "interfaces/typescript"
   },
-  "homepage": "https://github.com/openrois/openrois/tree/main/interfaces/typescript",
-  "bugs": {
-    "url": "https://github.com/openrois/openrois/issues"
-  },
-  "keywords": [
-    "rois",
-    "omg",
-    "robotics",
-    "hri",
-    "webrtc",
-    "ros2",
-    "avatar",
-    "middleware",
-    "interfaces"
-  ],
-  "sideEffects": false,
   "scripts": {
     "generate": "tsx scripts/generate.ts",
     "build": "npm run generate && tsc -p tsconfig.build.json",

@@ -1,25 +1,18 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.1</TargetFramework>
-    <LangVersion>latest</LangVersion>
     <PackageId>OpenRoIS.Interfaces</PackageId>
     <Version>0.1.0-alpha.1</Version>
     <Description>RoIS Framework 2.0 interface types for the OpenRoIS middleware</Description>
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
     <Authors>OpenRoIS Community</Authors>
-    <Copyright>Coarobo GK</Copyright>
-    <PackageProjectUrl>https://github.com/openrois/openrois/tree/main/interfaces/csharp</PackageProjectUrl>
     <RepositoryUrl>https://github.com/openrois/openrois</RepositoryUrl>
-    <RepositoryType>git</RepositoryType>
-    <PackageTags>rois omg robotics hri webrtc interfaces unity ros2 avatar</PackageTags>
     <PackageReadmeFile>README.md</PackageReadmeFile>
-    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
-    <PublishRepositoryUrl>true</PublishRepositoryUrl>
-    <EmbedUntrackedSources>true</EmbedUntrackedSources>
+    <TargetFramework>netstandard2.1</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
     <IncludeSymbols>true</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
-    <Nullable>enable</Nullable>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <NoWarn>CS1591</NoWarn>
   </PropertyGroup>
