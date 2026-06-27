@@ -7,30 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-### Changed
-
-- Upgrade generator to resolve `$ref`-to-inline-type (PEP 695 named type aliases).
-  Simple-type `$defs` (primitives like `RoISIdentifier`, `Integer`) and
-  array/union `$defs` (`ResultList`, `ArgumentList`, `CommandUnitSequenceItem`)
-  are resolved inline to their C# type equivalents instead of referencing
-  non-existent classes. Cycle guard added for recursive `$ref` resolution.
-- Fix `CommandUnitSequence.CommandUnitList` type from `IReadOnlyList<object>?`
-  to `IReadOnlyList<ICommandUnitSequenceItem>?` — emit `ICommandUnitSequenceItem`
-  marker interface implemented by `CommandUnit` and `ConcurrentCommands`.
-  This restores compile-time type safety for the command sequence union.
-- Regenerate all source files from updated JSON Schema (named type aliases
-  via PEP 695 `$defs`/`$ref`).
-
-## [0.1.0-alpha.1] - 2026-06-20
-
 ### Added
 
+- Target `netstandard2.1` for Unity 6.3+ compatibility.
+- Enable `Nullable` in the `.csproj`.
 - Generate `OpenRoIS.Interfaces` C# package from 38 JSON Schema files in `interfaces/schema/`.
 - Emit C# `sealed class` types for all core HRI, Common, Service, Profile, Bus, and component models.
+- Emit generated component models for `PersonDetection`, `Navigation`, and `SystemInformation`.
 - Emit C# `enum` types for `ReturnCode`, `ComponentStatus`, `StreamStatus`, `CompletedStatus`, `ErrorType`.
+- Emit `ICommandUnitSequenceItem` marker interface implemented by `CommandUnit` and `ConcurrentCommands`, so `CommandUnitSequence.CommandUnitList` is typed as `IReadOnlyList<ICommandUnitSequenceItem>?` for compile-time type safety of the command sequence union.
 - Hand-write `IBusAdapter` interface, `EventSink` delegate, `BusAdapterError` and `ComponentNotFoundError` exception classes.
-- Target `netstandard2.1` for Unity 6.3+ (Mono) through Unity 6.8 (CoreCLR) compatibility.
-- Custom generator (`scripts/Generator`) handling `$defs`, `$ref`, `anyOf` unions, recursive types, enums, and defaults.
 
 [unreleased]: https://github.com/openrois/openrois/compare/main...HEAD
-[0.1.0-alpha.1]: https://github.com/openrois/openrois/releases/tag/v0.1.0-alpha.1
