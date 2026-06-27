@@ -65,15 +65,23 @@ class ErrorType(StrEnum):
 class NotifyErrorEvent(BaseModel):
     """Event payload for ServiceApplicationBase::notify_error.
 
+    The PIM (section 8.2.4.6, Table 8.25) defines the Error Message as carrying
+    error_id, error_type, subscribe_id (mandatory), and expire (optional). The
+    IDL only defines error_id and error_type. This model follows the PIM.
+
     Attributes:
         error_id: Unique identifier for this error instance.
         error_type: Classification of the error.
+        subscribe_id: The subscription identifier associated with this error.
+        expire: ISO 8601 datetime when this error detail expires, or empty.
     """
 
     model_config = {"frozen": True, "extra": "forbid"}
 
     error_id: str
     error_type: ErrorType
+    subscribe_id: SubscribeId
+    expire: DateTime = ""
 
 
 class CompletedEvent(BaseModel):

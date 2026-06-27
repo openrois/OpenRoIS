@@ -69,7 +69,7 @@ class NavigationSetParameter(BaseModel):
             (default: 'time').
     """
 
-    model_config = {"extra": "forbid"}
+    model_config = {"frozen": True, "extra": "forbid"}
 
     target_positions: list[str] = Field(
         description="Navigation target positions",

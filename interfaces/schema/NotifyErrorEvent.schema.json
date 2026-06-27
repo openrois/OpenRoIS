@@ -1,6 +1,9 @@
 {
   "$comment": "GENERATED FROM interfaces/python: DO NOT EDIT. Run scripts/export_schema.py.",
   "$defs": {
+    "DateTime": {
+      "type": "string"
+    },
     "ErrorType": {
       "description": "Classification of error notifications.\n\nMaps to RoIS_Service::ErrorType in the IDL.\n\nENGINE_INTERNAL_ERROR: Error originating from the HRI Engine itself.\nCOMPONENT_INTERNAL_ERROR: Error originating from a component.\nCOMPONENT_NOT_RESPONDING: A component failed to respond within timeout.\nUSER_DEFINED_ERROR: Application-specific error.",
       "enum": [
@@ -11,10 +14,13 @@
       ],
       "title": "ErrorType",
       "type": "string"
+    },
+    "SubscribeId": {
+      "type": "string"
     }
   },
   "additionalProperties": false,
-  "description": "Event payload for ServiceApplicationBase::notify_error.\n\nAttributes:\n    error_id: Unique identifier for this error instance.\n    error_type: Classification of the error.",
+  "description": "Event payload for ServiceApplicationBase::notify_error.\n\nThe PIM (section 8.2.4.6, Table 8.25) defines the Error Message as carrying\nerror_id, error_type, subscribe_id (mandatory), and expire (optional). The\nIDL only defines error_id and error_type. This model follows the PIM.\n\nAttributes:\n    error_id: Unique identifier for this error instance.\n    error_type: Classification of the error.\n    subscribe_id: The subscription identifier associated with this error.\n    expire: ISO 8601 datetime when this error detail expires, or empty.",
   "properties": {
     "error_id": {
       "title": "Error Id",
@@ -22,11 +28,19 @@
     },
     "error_type": {
       "$ref": "#/$defs/ErrorType"
+    },
+    "subscribe_id": {
+      "$ref": "#/$defs/SubscribeId"
+    },
+    "expire": {
+      "$ref": "#/$defs/DateTime",
+      "default": ""
     }
   },
   "required": [
     "error_id",
-    "error_type"
+    "error_type",
+    "subscribe_id"
   ],
   "title": "NotifyErrorEvent",
   "type": "object"

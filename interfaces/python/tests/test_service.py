@@ -55,30 +55,51 @@ class TestNotifyErrorEvent:
         event = NotifyErrorEvent(
             error_id="err-001",
             error_type=ErrorType.COMPONENT_INTERNAL_ERROR,
+            subscribe_id="sub-001",
         )
         assert event.error_id == "err-001"
         assert event.error_type == ErrorType.COMPONENT_INTERNAL_ERROR
+        assert event.subscribe_id == "sub-001"
+        assert event.expire == ""
+
+    def test_construction_with_expire(self) -> None:
+        event = NotifyErrorEvent(
+            error_id="err-001",
+            error_type=ErrorType.COMPONENT_INTERNAL_ERROR,
+            subscribe_id="sub-001",
+            expire="2026-06-27T12:00:00Z",
+        )
+        assert event.expire == "2026-06-27T12:00:00Z"
 
     def test_serialization(self) -> None:
         event = NotifyErrorEvent(
             error_id="err-001",
             error_type=ErrorType.COMPONENT_NOT_RESPONDING,
+            subscribe_id="sub-002",
         )
         d = event.model_dump()
         assert d["error_id"] == "err-001"
         assert d["error_type"] == "COMPONENT_NOT_RESPONDING"
+        assert d["subscribe_id"] == "sub-002"
+        assert d["expire"] == ""
 
     def test_json_round_trip(self) -> None:
         event = NotifyErrorEvent(
             error_id="err-002",
             error_type=ErrorType.ENGINE_INTERNAL_ERROR,
+            subscribe_id="sub-003",
+            expire="2026-06-27T12:30:00Z",
         )
         j = event.model_dump_json()
         event2 = NotifyErrorEvent.model_validate_json(j)
         assert event == event2
 
     def test_frozen(self) -> None:
-        event = NotifyErrorEvent(error_id="err-001", error_type=ErrorType.USER_DEFINED_ERROR)
+        event = NotifyErrorEvent(
+            error_id="err-001",
+            error_type=ErrorType.USER_DEFINED_ERROR,
+            subscribe_id="sub-001",
+        )
         with pytest.raises(ValidationError):
             event.error_id = "changed"  # type: ignore[misc]
 
