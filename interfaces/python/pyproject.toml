@@ -33,15 +33,15 @@ classifiers = [
     "Topic :: Software Development :: Libraries",
     "Topic :: Software Development :: Libraries :: Python Modules",
 ]
+dependencies = [
+    "pydantic>=2.0",
+]
 
 [project.urls]
 Homepage = "https://github.com/openrois/openrois"
 Repository = "https://github.com/openrois/openrois"
 Changelog = "https://github.com/openrois/openrois/blob/main/interfaces/python/CHANGELOG.md"
 "Bug-Tracker" = "https://github.com/openrois/openrois/issues"
-dependencies = [
-    "pydantic>=2.0",
-]
 
 [project.optional-dependencies]
 dev = [
