@@ -14,14 +14,16 @@
   },
   "dependencies": {
     "@openrois/interfaces": "file:../interfaces/typescript",
-    "ws": "^8.21.0"
+    "ws": "^8.21.0",
+    "zod": "^4.4.3"
   },
   "devDependencies": {
     "@types/ws": "^8.18.1",
     "eslint": "^10.5.0",
     "tsup": "^8.5.1",
     "typescript": "^6.0.3",
-    "vite": "^8.0.16",
+    "vite": "^8.1.0",
     "vitest": "^4.1.9"
-  }
+  },
+  "keywords": []
 }
